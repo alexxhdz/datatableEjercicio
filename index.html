@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataTable con Bootstrap 5</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" />
+</head>
+
+<body>
+  <div class="container mt-5">
+    <div class="mb-2">
+      <button id="btnAgregar" class="btn btn-success">Agregar</button>
+    </div>
+    <table id="miTabla" class="table table-striped" style="width: 100%">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Acciones</th>
+          <!-- Agrega más columnas según tus necesidades -->
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Los datos se cargarán aquí mediante DataTables -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para Agregar Usuario -->
+  <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" aria-labelledby="modalAgregarUsuarioLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAgregarUsuarioLabel">Agregar Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Aquí puedes poner tu formulario -->
+          <form id="formAgregarUsuario">
+            <div class="mb-3">
+              <label for="nombreUsuario" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombreUsuario">
+            </div>
+            <div class="mb-3">
+              <label for="emailUsuario" class="form-label">Email</label>
+              <input type="email" class="form-control" id="emailUsuario">
+            </div>
+            <!-- Agrega más campos según sea necesario -->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnGuardarUsuario">Guardar Usuario</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación para Eliminar -->
+  <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-labelledby="modalEliminarUsuarioLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEliminarUsuarioLabel">Confirmar Eliminación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de querer eliminar a este usuario?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmarEliminar">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Actualizar Usuario -->
+  <div class="modal fade" id="modalActualizarUsuario" tabindex="-1" aria-labelledby="modalActualizarUsuarioLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalActualizarUsuarioLabel">Actualizar Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formActualizarUsuario">
+            <div class="mb-3">
+              <label for="actualizarNombreUsuario" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="actualizarNombreUsuario">
+            </div>
+            <div class="mb-3">
+              <label for="actualizarEmailUsuario" class="form-label">Email</label>
+              <input type="email" class="form-control" id="actualizarEmailUsuario">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnActualizarUsuario">Actualizar Usuario</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Ver Usuario -->
+  <div class="modal fade" id="modalVerUsuario" tabindex="-1" aria-labelledby="modalVerUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalVerUsuarioLabel">Detalles del Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formVerUsuario">
+            <div class="mb-3">
+              <label for="verNombreUsuario" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="verNombreUsuario" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="verEmailUsuario" class="form-label">Email</label>
+              <input type="email" class="form-control" id="verEmailUsuario" disabled>
+            </div>
+            <!-- Agrega aquí más campos para mostrar otros datos del usuario -->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- jQuery (Necesario para DataTables) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+
+  <script src="/script.js"></script>
+</body>
+
+</html>
